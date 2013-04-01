@@ -3,21 +3,8 @@
 
 var fs = require('fs');
 var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
 
 var isWin = !!process.platform.match(/^win/);
-
-var spawnGcliCmd;
-var spawnInstallCmd;
-
-if ( isWin ){
-  spawnGcliCmd = ['cmd', ['/C','npm install -g grunt-cli']];
-  spawnInstallCmd = ['cmd', ['/C', 'npm install']];
-} else {
-  spawnGcliCmd = ['npm', ['install', '-g', 'grunt-cli']];
-  spawnInstallCmd = ['npm', ['install']];
-}
-
 
 var validateCommitPath = '../../tasks/lib/validate-commit-msg.js';
 var gitHookPath = '.git/hooks/commit-msg';
@@ -56,21 +43,18 @@ var installGruntCli = function(callback) {
 
   console.log('Installing grunt-cli...');
 
-  var gcli = spawn.apply(spawn, spawnGcliCmd);
+  var gcli = exec('npm install -g grunt-cli', function (error) {
 
-  gcli.stdout.on('data', function(data) {
-    process.stdout.write(data);
-  });
-
-  gcli.stderr.on('data', function(data) {
-    process.stderr.write(data);
-  });
-
-  gcli.on('close', function(code) {
-    if ( code === 0 ){
+    if (error !== null) {
+      console.error('error installing grunt-cli: ' + error);
+    } else {
       callback();
     }
+
   });
+
+  gcli.stdout.pipe(process.stdout);
+  gcli.stderr.pipe(process.stderr);
 
 };
 
@@ -95,15 +79,16 @@ var installDependencies = function() {
 
   console.log('Installing dependencies...');
 
-  var install = spawn.apply(spawn, spawnInstallCmd);
+  var install = exec('npm install', function (error) {
 
-  install.stdout.on('data', function(data) {
-    process.stdout.write(data);
+    if (error !== null) {
+      console.error('Error installing karma dependencies: ' + error);
+    }
+
   });
 
-  install.stderr.on('data', function(data) {
-    process.stderr.write(data);
-  });
+  install.stdout.pipe(process.stdout);
+  install.stderr.pipe(process.stderr);
 
 };
 
