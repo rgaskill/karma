@@ -6,6 +6,7 @@ adapter/require.js
 adapter/qunit.js
 static/karma.js
 .idea/*
+*.iml
 tmp/*
 docs/_build
 *.swp
