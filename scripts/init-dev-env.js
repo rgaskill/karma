@@ -9,9 +9,9 @@ var isWin = !!process.platform.match(/^win/);
 var validateCommitPath = '../../scripts/validate-commit-msg.js';
 var gitHookPath = '.git/hooks/commit-msg';
 
-var nodeModulesPath = '../node_modules';
+var nodeModulesPath = 'node_modules';
 var karmaPath = '..';
-var nmKarmaPath = '../node_modules/karma';
+var nmKarmaPath = 'node_modules/karma';
 
 //Add Hook "validate-commit-msg"
 var gitHookSetup = function(){
