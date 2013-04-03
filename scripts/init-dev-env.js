@@ -103,6 +103,12 @@ var runInit = function() {
 
 };
 
+if ( !fs.existsSync('.git') ){
+  console.log("Run the init script from the root of the project. e.g.");
+  console.log("  $ ./scripts/init-dev-env.js");
+  process.exit(1);
+}
+
 if ( isWin ){
 
   exec('whoami /priv', function(err, o) {
