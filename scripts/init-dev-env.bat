@@ -1,1 +1,1 @@
-node init-dev-env.js
+node scripts/init-dev-env.js
